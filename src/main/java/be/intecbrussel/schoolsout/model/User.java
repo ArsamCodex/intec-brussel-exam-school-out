@@ -26,6 +26,6 @@ public class User {
 
     private Boolean isActive;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user")
     private Person person;
 }

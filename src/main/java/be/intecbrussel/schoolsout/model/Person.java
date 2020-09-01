@@ -1,11 +1,9 @@
 package be.intecbrussel.schoolsout.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * The Person entity will keep our personal data
@@ -22,8 +20,10 @@ public class Person {
     @GeneratedValue
     private Long id;
 
+    @NonNull
     private String firstName;
 
+    @NonNull
     private String familyName;
 
     @Enumerated
@@ -31,5 +31,11 @@ public class Person {
 
     @ManyToOne
     private Course course;
+
+    @OneToOne
+    private User user;
+
+    @OneToMany(mappedBy = "person")
+    private List<Grade> grades;
 
 }

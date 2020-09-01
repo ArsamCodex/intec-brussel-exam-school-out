@@ -1,36 +1,22 @@
-package be.intecbrussel.schoolsout.app;
+package be.intecbrussel.schoolsout.util;
 
-import be.intecbrussel.schoolsout.data.CourseService;
 import be.intecbrussel.schoolsout.model.Course;
 import be.intecbrussel.schoolsout.model.Exam;
 import be.intecbrussel.schoolsout.model.Module;
 import com.github.javafaker.Faker;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
-import static java.lang.System.err;
-import static java.lang.System.out;
+@NoArgsConstructor
+public class RandomCourseGenerator {
 
-public class Sandbox2 {
+    public static final Faker faker = new Faker(new Locale("en-US"));
 
-    private static final CourseService courseService = new CourseService();
-    private static final Faker faker = new Faker(new Locale("en-US"));
-
-    public static void main(String[] args) {
-        addCourseToDB(course());
-    }
-
-    private static void addCourseToDB(final Course courseToAdd) {
-        final Optional<Course> oCourse = courseService.addCourse(courseToAdd);
-        oCourse.ifPresentOrElse(
-                course -> out.println("The course is registered."),
-                () -> err.println("Error: course could NOT be saved.."));
-    }
-
-    private static Course course() {
+    public static Course course() {
         final Course course = Course.builder()
                 .code(faker.code().isbn13())
                 .name(faker.company().profession())
@@ -64,5 +50,4 @@ public class Sandbox2 {
                 .date(LocalDate.now())
                 .build();
     }
-
 }

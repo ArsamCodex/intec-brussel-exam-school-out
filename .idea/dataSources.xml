@@ -7,5 +7,11 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://moktok.javawebdev.com:33306/yilmas</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="yilmaz@localhost" uuid="7b0940d9-c5f3-4611-ba88-7910f58a6174">
+      <driver-ref>h2.unified</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.h2.Driver</jdbc-driver>
+      <jdbc-url>jdbc:h2:$PROJECT_DIR$/src/main/resources/DB/SchoolsOutDB;DB_CLOSE_ON_EXIT=FALSE</jdbc-url>
+    </data-source>
   </component>
 </project>
