@@ -17,7 +17,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 @Entity
-@Table(name = "SchoolsOutUser")
+@Table
 public class User {
     @Id
     private String login;
@@ -26,6 +26,6 @@ public class User {
 
     private Boolean isActive;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Person person;
 }

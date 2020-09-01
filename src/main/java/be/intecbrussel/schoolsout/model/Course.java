@@ -12,14 +12,14 @@ import java.util.List;
  * The Course entity describes the course that a Person follows.
  * In the first instance we will only keep track of what the current course is.
  * Later we will also add a 'history'
- * */
+ */
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
 @Entity
-@Table(name = "SchoolsOutCourse")
+@Table
 public class Course {
     @Id
     @GeneratedValue
@@ -36,6 +36,10 @@ public class Course {
 
     private Boolean isActive;
 
-    @OneToMany
+    @OneToMany(targetEntity = Module.class,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            orphanRemoval = true,
+            mappedBy = "course")
     private List<Module> modules;
 }

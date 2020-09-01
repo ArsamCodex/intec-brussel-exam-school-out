@@ -9,14 +9,14 @@ import javax.persistence.*;
 
 /**
  * The Person entity will keep our personal data
- * */
+ */
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
 @Entity
-@Table(name = "SchoolsOutPerson")
+@Table
 public class Person {
     @Id
     @GeneratedValue

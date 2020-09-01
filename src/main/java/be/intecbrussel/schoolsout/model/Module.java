@@ -10,14 +10,14 @@ import java.util.List;
 
 /**
  * The Module entity describes the different modules that make up a course.
- * */
+ */
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
 @Entity
-@Table(name = "SchoolsOutModule")
+@Table
 public class Module {
     @Id
     @GeneratedValue
@@ -28,9 +28,16 @@ public class Module {
     @Lob
     private String description;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Course.class,
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
     private Course course;
 
-    @OneToMany(mappedBy = "module")
+    @OneToMany(
+            targetEntity = Exam.class,
+            cascade = CascadeType.ALL,
+            mappedBy = "module",
+            fetch = FetchType.EAGER,
+            orphanRemoval = true)
     private List<Exam> exams;
 }

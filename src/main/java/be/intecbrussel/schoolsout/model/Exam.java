@@ -11,14 +11,14 @@ import java.time.LocalDate;
 /**
  * The Exam entity keeps track of the various exams or tests that are taken. Initially we will keep 'simple' exams in our program.
  * Later we will add exams that can consist of several parts
- * */
+ */
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
 @Entity
-@Table(name = "SchoolsOutExam")
+@Table
 public class Exam {
     @Id
     @GeneratedValue
@@ -35,6 +35,8 @@ public class Exam {
 
     private Integer total;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Module.class,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER)
     private Module module;
 }

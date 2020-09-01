@@ -11,27 +11,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-import static java.lang.System.*;
 import static java.lang.System.err;
+import static java.lang.System.out;
 
-public class Part1 {
+public class Sandbox {
 
     private static final CourseService courseService = new CourseService();
     private static final Faker faker = new Faker(new Locale("en-US"));
 
     public static void main(String[] args) {
         final Optional<Course> oCourse = courseService.addCourse(course());
-        oCourse.ifPresentOrElse(course -> {
-            out.println("The course is registered.");
-            final Optional<Module> oModule = courseService.addModule(module(course));
-            oModule.ifPresentOrElse(module -> {
-                out.println("The module is registered.");
-                final Optional<Exam> oExam = courseService.addExam(exam(module));
-                oExam.ifPresentOrElse(exam -> {
-                    out.println("The exam is registered.");
-                }, () -> err.println("Error: exam could NOT be saved.."));
-            }, () -> err.println("Error: module could NOT be saved.."));
-        }, () -> err.println("Error: course could NOT be saved.."));
+        oCourse.ifPresentOrElse(course -> out.println("The course is registered."), () -> err.println("Error: course could NOT be saved.."));
     }
 
     private static Course course() {

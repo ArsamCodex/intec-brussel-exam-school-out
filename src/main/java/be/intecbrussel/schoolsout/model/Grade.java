@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 @Entity
-@Table(name = "SchoolsOutGrade")
+@Table
 public class Grade {
 
     @Id
