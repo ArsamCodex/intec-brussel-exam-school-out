@@ -29,7 +29,7 @@ public class Exam {
     @Lob
     private String description;
 
-    private LocalDate examDate;
+    private LocalDate date;
 
     private Integer weight;
 

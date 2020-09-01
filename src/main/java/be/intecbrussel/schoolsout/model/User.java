@@ -26,6 +26,6 @@ public class User {
 
     private Boolean isActive;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne
     private Person person;
 }

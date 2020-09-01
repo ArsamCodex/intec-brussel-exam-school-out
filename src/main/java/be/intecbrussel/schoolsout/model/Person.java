@@ -29,6 +29,7 @@ public class Person {
     @Enumerated
     private Gender gender;
 
-    @OneToOne
+    @ManyToOne
     private Course course;
+
 }

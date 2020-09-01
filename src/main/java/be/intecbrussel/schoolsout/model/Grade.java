@@ -18,8 +18,13 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
+@Entity
+@Table(name = "SchoolsOutGrade")
 public class Grade {
 
-
+    @Id
+    @GeneratedValue
+    private Long id;
+    private Double score;
 
 }

@@ -88,7 +88,7 @@ course: Course
 
 ```
 Course
-User Person id: Long
+id: Long
 name: string
 description: string
 code: string
@@ -114,7 +114,7 @@ description: string
 date: LocalDate
 weight: int
 total: int
-module: module
+module: Module
 ```
 
 Extra information:

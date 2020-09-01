@@ -38,5 +38,4 @@ public class Course {
 
     @OneToMany
     private List<Module> modules;
-
 }

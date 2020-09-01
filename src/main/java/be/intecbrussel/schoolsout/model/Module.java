@@ -31,6 +31,6 @@ public class Module {
     @ManyToOne
     private Course course;
 
-    @OneToMany
+    @OneToMany(mappedBy = "module")
     private List<Exam> exams;
 }
