@@ -36,6 +36,6 @@ public class Person {
     private User user;
 
     @OneToMany(mappedBy = "person")
+    @ToString.Exclude
     private List<Grade> grades;
-
 }

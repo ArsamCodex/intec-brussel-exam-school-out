@@ -27,6 +27,25 @@ public class Part1App {
                     addCourseToDB(course);
                     addPersonToDB(person);
                 });
+
+        final Course courseMath = Course.builder()
+                .code("MATH007")
+                .description("Mathematics course for starters.")
+                .imageUrl("https://moktok.com/math/007/photo01.jpg")
+                .isActive(true)
+                .name("Introduction to Mathematics")
+                .build();
+        addCourseToDB(courseMath);
+
+        final Long courseMathId = courseMath.getId();
+
+        courseService.getCourses().forEach(out::println);
+        final Optional<Course> oUpdatedCourse = courseService.editCourse(courseMath.toBuilder()
+                .name("Math in Computer Sciences")
+                .build(), courseMathId);
+        oUpdatedCourse.ifPresentOrElse(out::println,
+                () -> err.println("Error: The course could with ID " + courseMathId + " could NOT be updated.."));
+
     }
 
     private static void addCourseToDB(final Course courseToAdd) {
