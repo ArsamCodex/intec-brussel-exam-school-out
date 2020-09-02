@@ -50,4 +50,20 @@ public class UserRepository {
     public List<Person> getPeople(final Integer pageNo, final Integer resultsPerPage) {
         return Page.of(getPeople(), pageNo, resultsPerPage);
     }
+
+
+    public Optional<User> editUser(final User user, final String login) {
+        final EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        final User foundUser = em.find(User.class, login);
+        final User updatedUser = foundUser.toBuilder()
+                .login(user.getLogin() != null ? user.getLogin() : foundUser.getLogin())
+                .passwordHash(user.getPasswordHash() != null ? user.getPasswordHash() : foundUser.getPasswordHash())
+                .isActive(true)
+                .person(user.getPerson() != null ? user.getPerson() : foundUser.getPerson())
+                .build();
+        em.merge(updatedUser);
+        em.getTransaction().commit();
+        return Optional.of(updatedUser);
+    }
 }
