@@ -1,14 +1,16 @@
 package be.intecbrussel.schoolsout.data;
 
+import be.intecbrussel.schoolsout.model.Page;
 import be.intecbrussel.schoolsout.model.Person;
 import be.intecbrussel.schoolsout.model.User;
 import be.intecbrussel.schoolsout.util.EntityGenerator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.util.List;
 import java.util.Optional;
 
-public class UserService {
+public class UserRepository {
 
     private static final EntityManagerFactory emf = EntityGenerator.generate(Connections.MySQL_Moktok_Remote);
 
@@ -29,4 +31,23 @@ public class UserService {
         return Optional.of(person);
     }
 
+    public List<User> getUsers() {
+        final EntityManager em = emf.createEntityManager();
+        return em.createQuery("SELECT u FROM User u", User.class)
+                .getResultList();
+    }
+
+    public List<User> getUsers(final Integer pageNo, final Integer resultsPerPage) {
+        return Page.of(getUsers(), pageNo, resultsPerPage);
+    }
+
+    public List<Person> getPeople() {
+        final EntityManager em = emf.createEntityManager();
+        return em.createQuery("SELECT p FROM Person p", Person.class)
+                .getResultList();
+    }
+
+    public List<Person> getPeople(final Integer pageNo, final Integer resultsPerPage) {
+        return Page.of(getPeople(), pageNo, resultsPerPage);
+    }
 }

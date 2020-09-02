@@ -3,6 +3,7 @@ package be.intecbrussel.schoolsout.data;
 import be.intecbrussel.schoolsout.model.Course;
 import be.intecbrussel.schoolsout.model.Exam;
 import be.intecbrussel.schoolsout.model.Module;
+import be.intecbrussel.schoolsout.model.Page;
 import be.intecbrussel.schoolsout.util.EntityGenerator;
 
 import javax.persistence.EntityManager;
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public class CourseService {
+public class CourseRepository {
     private static final EntityManagerFactory emf = EntityGenerator.generate(Connections.MySQL_Moktok_Remote);
 
     public Optional<Course> addCourse(final Course course) {
@@ -73,15 +74,21 @@ public class CourseService {
     }
 
     public List<Course> getCourses(final Integer pageNo, final Integer resultsPerPage) {
-        final EntityManager em = emf.createEntityManager();
-        return em.createQuery("SELECT c FROM Course c LIMIT " + (resultsPerPage) + " OFFSET " + (pageNo * resultsPerPage), Course.class)
-                .getResultList();
+        return Page.of(getCourses(), pageNo, resultsPerPage);
     }
 
     public List<Module> getModules(final Long courseId) {
         final EntityManager em = emf.createEntityManager();
         return em.createQuery("SELECT m FROM Module m WHERE m.course_id = " + courseId, Module.class)
                 .getResultList();
+    }
+
+    public List<Module> getModules(final Long courseId, final Integer pageNo, final Integer resultsPerPage) {
+        return Page.of(getModules(courseId), pageNo, resultsPerPage);
+    }
+
+    public List<Module> getModules(final Integer pageNo, final Integer resultsPerPage) {
+        return Page.of(getModules(), pageNo, resultsPerPage);
     }
 
     public List<Module> getModules() {
@@ -96,10 +103,18 @@ public class CourseService {
                 .getResultList();
     }
 
+    public List<Exam> getExams(final Long moduleId, final Integer pageNo, final Integer resultsPerPage) {
+        return Page.of(getExams(moduleId), pageNo, resultsPerPage);
+    }
+
     public List<Exam> getExams() {
         final EntityManager em = emf.createEntityManager();
         return em.createQuery("SELECT e FROM Exam e", Exam.class)
                 .getResultList();
+    }
+
+    public List<Exam> getExams(final Integer pageNo, final Integer resultsPerPage) {
+        return Page.of(getExams(), pageNo, resultsPerPage);
     }
 
     public Optional<Course> editCourse(final Course course, final Long id) {
