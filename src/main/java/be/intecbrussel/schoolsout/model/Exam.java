@@ -31,7 +31,7 @@ public class Exam {
 
     private LocalDate date;
 
-    private Integer weight;
+    private Double weight;
 
     private Integer total;
 

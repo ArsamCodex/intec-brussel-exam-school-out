@@ -72,6 +72,12 @@ public class CourseService {
                 .getResultList();
     }
 
+    public List<Course> getCourses(final Integer pageNo, final Integer resultsPerPage) {
+        final EntityManager em = emf.createEntityManager();
+        return em.createQuery("SELECT c FROM Course c LIMIT " + (resultsPerPage) + " OFFSET " + (pageNo * resultsPerPage), Course.class)
+                .getResultList();
+    }
+
     public List<Module> getModules(final Long courseId) {
         final EntityManager em = emf.createEntityManager();
         return em.createQuery("SELECT m FROM Module m WHERE m.course_id = " + courseId, Module.class)
