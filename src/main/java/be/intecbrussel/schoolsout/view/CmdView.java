@@ -67,10 +67,11 @@ public class CmdView {
                 final boolean selectionExist = Arrays.stream(ids).anyMatch(value -> value == selected.getId());
                 if (!selectionExist) {
                     out.println("Please enter valid input..!");
+                } else {
+                    selected.getQuery().execute();
                 }
-                selected.getQuery().execute();
             } else {
-                exited = true;
+                out.println("Please enter valid input..!");
             }
         } while (!exited);
 
@@ -331,9 +332,15 @@ public class CmdView {
                         .build(),
                 CmdMenuItem.builder()
                         .id(3)
-                        .header("Find-ID")
+                        .header("Find-Id")
                         .content("Find module by Id..")
                         .query(moduleService::getModuleById)
+                        .build(),
+                CmdMenuItem.builder()
+                        .id(4)
+                        .header("Find-CourseId")
+                        .content("Find modules by courseId..")
+                        .query(moduleService::getAllModulesByCourseId)
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
@@ -488,6 +495,12 @@ public class CmdView {
                         .id(3)
                         .header("Find-ID")
                         .content("Find exam by Id..")
+                        .query(examService::getExamById)
+                        .build(),
+                CmdMenuItem.builder()
+                        .id(4)
+                        .header("Find-ModuleId")
+                        .content("Find exams by module id..")
                         .query(examService::getExamById)
                         .build(),
                 CmdMenuItem.builder()

@@ -74,6 +74,13 @@ public class ModuleService {
         TablePrinter.printModuleTable(moduleList);
     }
 
+    public void getAllModulesByCourseId() {
+        final Long courseId = Long.parseLong(KeyboardReader.nextStringForced("Course ID: "));
+        out.println("Module list is below: ");
+        final List<Module> moduleList = courseRepo.getModules(courseId);
+        TablePrinter.printModuleTable(moduleList);
+    }
+
     public void getAllModulesAsPages() {
         boolean exit = false;
         int pageNo;
@@ -92,7 +99,6 @@ public class ModuleService {
     }
 
     public void getModuleById() {
-        out.print("Module ID: ");
         final Long id = Long.parseLong(KeyboardReader.nextStringForced("Module ID: "));
         final Optional<Module> oModule = courseRepo.getModuleById(id);
         oModule.ifPresentOrElse(module -> TablePrinter.printModuleTable(Collections.singletonList(module)),

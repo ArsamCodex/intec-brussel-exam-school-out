@@ -63,6 +63,12 @@ public class ExamService {
         TablePrinter.printExamTable(examList);
     }
 
+    public void getAllExamsByModuleId() {
+        final Long moduleId = Long.parseLong(KeyboardReader.nextStringForced("Module ID: "));
+        out.println("Module list is below: ");
+        final List<Exam> examList = courseRepo.getExams(moduleId);
+        TablePrinter.printExamTable(examList);
+    }
 
     public void removeOneExam() {
         out.print("Exam ID: ");

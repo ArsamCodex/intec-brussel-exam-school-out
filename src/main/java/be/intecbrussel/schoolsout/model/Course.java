@@ -1,14 +1,12 @@
 package be.intecbrussel.schoolsout.model;
 
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.List;
 
 /**
  * The Course entity describes the course that a Person follows.
  * In the first instance we will only keep track of what the current course is.
- * Later we will also add a 'history'
  */
 
 @Data

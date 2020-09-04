@@ -14,14 +14,13 @@ public class KeyboardReader {
         out.println(message);
         String result = "";
         boolean exit = false;
-        String enteredValue = keyboard.nextLine();
         do {
-            if (!enteredValue.isEmpty() && !trimmed(enteredValue).isEmpty() && trimmed(enteredValue).length() >= 2) {
+            final String enteredValue = keyboard.nextLine();
+            if (!enteredValue.isEmpty() && !trimmed(enteredValue).isEmpty()) {
                 result = enteredValue;
                 exit = true;
             } else {
                 err.println("The input entered is invalid..!");
-                enteredValue = keyboard.nextLine();
             }
         }
         while (!exit);

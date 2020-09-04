@@ -71,7 +71,6 @@ public class CourseService {
     }
 
     public void getCourseById() {
-        out.print("Course ID: ");
         final Long id = Long.parseLong(KeyboardReader.nextStringForced("Course ID: "));
         final Optional<Course> oCourse = courseRepo.getCourseById(id);
         oCourse.ifPresentOrElse(course -> TablePrinter.printCourseTable(Collections.singletonList(course)),
@@ -79,17 +78,16 @@ public class CourseService {
     }
 
     public void removeOneCourse() {
-        out.print("Course ID: ");
         final Long id = Long.parseLong(KeyboardReader.nextStringForced("Course ID: "));
         final Optional<Course> oCourse = courseRepo.removeCourse(id);
-        oCourse.ifPresentOrElse(course -> err.println("Error: The course could NOT be deleted.."),
-                () -> out.println("The course with ID " + id + " is deleted.."));
+        oCourse.ifPresentOrElse(course -> err.println("Error: The course " + course.getName() + " is deleted.."),
+                () -> out.println("The course with ID " + id + " is NOT found, therefore NOT deleted.."));
     }
 
     public void editOneCourse() {
         final Long id = Long.parseLong(KeyboardReader.nextStringForced("Course ID: "));
         final String name = KeyboardReader.nextStringForced("Name: ");
-        final String description = KeyboardReader.nextStringForced("Description: ");
+        final String description = KeyboardReader.nextString("Description: ");
         final String code = KeyboardReader.nextString("Code: ");
         final String imageUrl = KeyboardReader.nextString("Image URL: ");
 
@@ -103,8 +101,6 @@ public class CourseService {
         oUpdatedCourse.ifPresentOrElse(course -> TablePrinter.printCourseTable(Collections.singletonList(course)),
                 () -> err.println("Error: The course could with ID " + id + " could NOT be updated.."));
     }
-
-
 
 
 }

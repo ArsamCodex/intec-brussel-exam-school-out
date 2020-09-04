@@ -79,7 +79,8 @@ public class CourseRepository {
 
     public List<Module> getModules(final Long courseId) {
         final EntityManager em = emf.createEntityManager();
-        return em.createQuery("SELECT m FROM Module m WHERE m.course_id = " + courseId, Module.class)
+        return em.createQuery("SELECT m FROM Module m WHERE m.course.id = :courseId", Module.class)
+                .setParameter("courseId", courseId)
                 .getResultList();
     }
 
@@ -97,9 +98,17 @@ public class CourseRepository {
                 .getResultList();
     }
 
+    public List<Module> getModulesByCourseId(final Long courseId) {
+        final EntityManager em = emf.createEntityManager();
+        return em.createQuery("SELECT m FROM Module m WHERE m.course.id = :courseId", Module.class)
+                .setParameter("courseId", courseId)
+                .getResultList();
+    }
+
     public List<Exam> getExams(final Long moduleId) {
         final EntityManager em = emf.createEntityManager();
-        return em.createQuery("SELECT e FROM Exam e WHERE e.module_id = " + moduleId, Exam.class)
+        return em.createQuery("SELECT e FROM Exam e WHERE e.module.id = :moduleId", Exam.class)
+                .setParameter("moduleId", moduleId)
                 .getResultList();
     }
 
@@ -113,6 +122,13 @@ public class CourseRepository {
                 .getResultList();
     }
 
+    public List<Exam> getExamsByModuleId(final Long moduleId) {
+        final EntityManager em = emf.createEntityManager();
+        return em.createQuery("SELECT e FROM Exam e WHERE e.module.id = :moduleId", Exam.class)
+                .setParameter("moduleId", moduleId)
+                .getResultList();
+    }
+
     public List<Exam> getExams(final Integer pageNo, final Integer resultsPerPage) {
         return Page.of(getExams(), pageNo, resultsPerPage);
     }
@@ -122,12 +138,12 @@ public class CourseRepository {
         em.getTransaction().begin();
         final Course foundCourse = em.find(Course.class, id);
         final Course updatedCourse = foundCourse.toBuilder()
-                .name(course.getName() != null ? course.getName() : foundCourse.getName())
+                .name(course.getName() != null || !course.getName().equalsIgnoreCase("") ? course.getName() : foundCourse.getName())
                 .isActive(course.getIsActive() != null ? course.getIsActive() : foundCourse.getIsActive())
-                .imageUrl(course.getImageUrl() != null ? course.getImageUrl() : foundCourse.getImageUrl())
-                .description(course.getDescription() != null ? course.getDescription() : foundCourse.getDescription())
+                .imageUrl(course.getImageUrl() != null || !course.getImageUrl().equalsIgnoreCase("") ? course.getImageUrl() : foundCourse.getImageUrl())
+                .description(course.getDescription() != null || !course.getDescription().equalsIgnoreCase("") ? course.getDescription() : foundCourse.getDescription())
                 .modules(course.getModules() != null && !course.getModules().isEmpty() ? course.getModules() : foundCourse.getModules())
-                .code(course.getCode() != null ? course.getCode() : foundCourse.getCode())
+                .code(course.getCode() != null || !course.getCode().equalsIgnoreCase("") ? course.getCode() : foundCourse.getCode())
                 .build();
         em.merge(updatedCourse);
         em.getTransaction().commit();
@@ -170,42 +186,89 @@ public class CourseRepository {
 
     public Optional<Course> removeCourse(final Course course) {
         final EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.remove(course);
-        em.getTransaction().commit();
-        return getCourseById(course.getId());
+        final Optional<Course> oCourse = em.createQuery(
+                "SELECT c FROM Course c " +
+                        "WHERE c.name = :name AND" +
+                        " c.code = :code", Course.class)
+                .setParameter("code", course.getCode())
+                .setParameter("name", course.getName())
+                .getResultList()
+                .stream()
+                .filter(c -> c.getIsActive().equals(Boolean.TRUE))
+                .findFirst();
+        if (oCourse.isPresent()) {
+            em.getTransaction().begin();
+            em.remove(course);
+            em.getTransaction().commit();
+            return oCourse;
+        }
+
+        return Optional.empty();
     }
 
     public Optional<Course> removeCourse(final Long id) {
         final EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.remove(Course.builder().id(id).build());
-        em.getTransaction().commit();
-        return getCourseById(id);
+        final Optional<Course> oCourse = getCourseById(id);
+        if (oCourse.isPresent()) {
+            em.getTransaction().begin();
+            em.remove(oCourse.get());
+            em.getTransaction().commit();
+            return oCourse;
+        }
+
+        return Optional.empty();
     }
 
     public Optional<Module> removeModule(final Long id) {
         final EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.remove(Module.builder().id(id).build());
-        em.getTransaction().commit();
-        return getModuleById(id);
+        final Optional<Module> oModule = getModuleById(id);
+        if (oModule.isPresent()) {
+            em.getTransaction().begin();
+            em.remove(oModule.get());
+            em.getTransaction().commit();
+            return oModule;
+        }
+        return Optional.empty();
     }
 
     public Optional<Module> removeModule(final Module module) {
         final EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.remove(module);
-        em.getTransaction().commit();
-        return getModuleById(module.getId());
+        final Optional<Module> oModule = em.createQuery("" +
+                "SELECT m FROM Module m " +
+                "WHERE m.name = :name AND m.course.name = :course", Module.class)
+                .setParameter("name", module.getName())
+                .setParameter("course", module.getCourse().getName())
+                .getResultList()
+                .stream()
+                .findFirst();
+        if (oModule.isPresent()) {
+            em.getTransaction().begin();
+            em.remove(module);
+            em.getTransaction().commit();
+            return oModule;
+        }
+        return Optional.empty();
     }
 
     public Optional<Exam> removeExam(final Exam exam) {
         final EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.remove(exam);
-        em.getTransaction().commit();
-        return getExamById(exam.getId());
+        final Optional<Exam> oExam = em.createQuery("" +
+                "SELECT e FROM Exam e " +
+                "WHERE e.name = :name " +
+                "AND e.module.name = :module", Exam.class)
+                .setParameter("name", exam.getName())
+                .setParameter("module", exam.getModule().getName())
+                .getResultList()
+                .stream()
+                .findFirst();
+        if (oExam.isPresent()) {
+            em.getTransaction().begin();
+            em.remove(oExam.get());
+            em.getTransaction().commit();
+            return oExam;
+        }
+
+        return Optional.empty();
     }
 
     public Optional<Exam> removeExam(final Long id) {
