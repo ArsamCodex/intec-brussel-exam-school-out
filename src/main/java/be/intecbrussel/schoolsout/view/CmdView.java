@@ -3,6 +3,8 @@ package be.intecbrussel.schoolsout.view;
 import be.intecbrussel.schoolsout.model.Course;
 import be.intecbrussel.schoolsout.model.Person;
 import be.intecbrussel.schoolsout.service.CourseService;
+import be.intecbrussel.schoolsout.service.ExamService;
+import be.intecbrussel.schoolsout.service.ModuleService;
 import be.intecbrussel.schoolsout.service.UserService;
 import be.intecbrussel.schoolsout.util.KeyboardReader;
 import be.intecbrussel.schoolsout.util.RandomCourseGenerator;
@@ -17,8 +19,11 @@ public class CmdView {
 
     private static final UserService userService = new UserService();
     private static final CourseService courseService = new CourseService();
+    private static final ModuleService moduleService = new ModuleService();
+    private static final ExamService examService = new ExamService();
     private static final String EXIT_MESSAGE_CONTENT = "Exit from application..!";
     private static final String GO_BACK_MESSAGE_CONTENT = "Go back to previous menu..";
+    private static final String GO_BACK_HEADER_MESSAGE = "<< Go back";
 
     public static void main(String[] args) {
 
@@ -32,11 +37,17 @@ public class CmdView {
     }
 
     private static void generateRandomDataForAllTables() {
+        // Generates 3 course with 10 modules for each, and also 4 exams for each module..
         IntStream.range(0, 3)
-                .forEach(value -> {
+                .forEach(cCount -> {
                     final Course course = RandomCourseGenerator.course();
-                    final Person person = RandomUserGenerator.person(course);
                     courseService.addCourseToDB(course);
+                });
+
+        // Generates 2 people with 1 user for each person..
+        IntStream.range(0, 2)
+                .forEach(value -> {
+                    final Person person = RandomUserGenerator.person();
                     userService.addPersonToDB(person);
                 });
     }
@@ -133,7 +144,7 @@ public class CmdView {
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
-                        .header("< Go Back")
+                        .header(GO_BACK_HEADER_MESSAGE)
                         .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(mainMenu()))
                         .build(),
@@ -171,8 +182,8 @@ public class CmdView {
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
-                        .header("< Go Back")
-                        .content("Go back to course menu")
+                        .header(GO_BACK_HEADER_MESSAGE)
+                        .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(courseMenu()))
                         .build(),
                 CmdMenuItem.builder()
@@ -196,8 +207,8 @@ public class CmdView {
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
-                        .header("< Go Back")
-                        .content("Go back to course menu")
+                        .header(GO_BACK_HEADER_MESSAGE)
+                        .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(courseMenu()))
                         .build(),
                 CmdMenuItem.builder()
@@ -221,8 +232,8 @@ public class CmdView {
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
-                        .header("< Go Back")
-                        .content("Go back to course menu")
+                        .header(GO_BACK_HEADER_MESSAGE)
+                        .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(courseMenu()))
                         .build(),
                 CmdMenuItem.builder()
@@ -246,8 +257,8 @@ public class CmdView {
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
-                        .header("< Go Back")
-                        .content("Go back to course menu")
+                        .header(GO_BACK_HEADER_MESSAGE)
+                        .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(courseMenu()))
                         .build(),
                 CmdMenuItem.builder()
@@ -289,7 +300,7 @@ public class CmdView {
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
-                        .header("< Go Back")
+                        .header(GO_BACK_HEADER_MESSAGE)
                         .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(mainMenu()))
                         .build(),
@@ -310,23 +321,23 @@ public class CmdView {
                         .id(1)
                         .header("All")
                         .content("Show all modules..")
-                        .query(courseService::getAllModules)
+                        .query(moduleService::getAllModules)
                         .build(),
                 CmdMenuItem.builder()
                         .id(2)
                         .header("Paged")
                         .content("Show all modules as pages..")
-                        .query(courseService::getAllModulesAsPages)
+                        .query(moduleService::getAllModulesAsPages)
                         .build(),
                 CmdMenuItem.builder()
                         .id(3)
                         .header("Find-ID")
                         .content("Find module by Id..")
-                        .query(courseService::getModuleById)
+                        .query(moduleService::getModuleById)
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
-                        .header("< Go Back")
+                        .header(GO_BACK_HEADER_MESSAGE)
                         .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(moduleMenu()))
                         .build(),
@@ -347,11 +358,11 @@ public class CmdView {
                         .id(1)
                         .header("Add")
                         .content("Add new module..")
-                        .query(courseService::addOneModule)
+                        .query(moduleService::addOneModule)
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
-                        .header("< Go Back")
+                        .header(GO_BACK_HEADER_MESSAGE)
                         .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(moduleMenu()))
                         .build(),
@@ -372,11 +383,11 @@ public class CmdView {
                         .id(1)
                         .header("Edit")
                         .content("Edit existing module..")
-                        .query(courseService::editOneModule)
+                        .query(moduleService::editOneModule)
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
-                        .header("< Go Back")
+                        .header(GO_BACK_HEADER_MESSAGE)
                         .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(moduleMenu()))
                         .build(),
@@ -397,11 +408,11 @@ public class CmdView {
                         .id(1)
                         .header("Remove by ID")
                         .content("Remove module by Id..")
-                        .query(courseService::removeOneModule)
+                        .query(moduleService::removeOneModule)
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
-                        .header("< Go Back")
+                        .header(GO_BACK_HEADER_MESSAGE)
                         .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(moduleMenu()))
                         .build(),
@@ -444,7 +455,7 @@ public class CmdView {
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
-                        .header("< Go Back")
+                        .header(GO_BACK_HEADER_MESSAGE)
                         .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(mainMenu()))
                         .build(),
@@ -465,23 +476,23 @@ public class CmdView {
                         .id(1)
                         .header("All")
                         .content("Show all exams..")
-                        .query(courseService::getAllExams)
+                        .query(examService::getAllExams)
                         .build(),
                 CmdMenuItem.builder()
                         .id(2)
                         .header("Paged")
                         .content("Show all exams as pages..")
-                        .query(courseService::getAllExamsAsPages)
+                        .query(examService::getAllExamsAsPages)
                         .build(),
                 CmdMenuItem.builder()
                         .id(3)
                         .header("Find-ID")
                         .content("Find exam by Id..")
-                        .query(courseService::getExamById)
+                        .query(examService::getExamById)
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
-                        .header("< Go Back")
+                        .header(GO_BACK_HEADER_MESSAGE)
                         .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(examMenu()))
                         .build(),
@@ -502,11 +513,11 @@ public class CmdView {
                         .id(1)
                         .header("Add")
                         .content("Add a new exam..")
-                        .query(courseService::addOneExam)
+                        .query(examService::addOneExam)
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
-                        .header("< Go Back")
+                        .header(GO_BACK_HEADER_MESSAGE)
                         .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(examMenu()))
                         .build(),
@@ -527,11 +538,11 @@ public class CmdView {
                         .id(1)
                         .header("Edit")
                         .content("Edit existing exam..")
-                        .query(courseService::editOneExam)
+                        .query(examService::editOneExam)
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
-                        .header("< Go Back")
+                        .header(GO_BACK_HEADER_MESSAGE)
                         .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(examMenu()))
                         .build(),
@@ -552,11 +563,11 @@ public class CmdView {
                         .id(1)
                         .header("Remove by ID")
                         .content("Remove module by Id..")
-                        .query(courseService::removeOneExam)
+                        .query(examService::removeOneExam)
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
-                        .header("< Go Back")
+                        .header(GO_BACK_HEADER_MESSAGE)
                         .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(examMenu()))
                         .build(),
@@ -581,7 +592,7 @@ public class CmdView {
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
-                        .header("< Go Back")
+                        .header(GO_BACK_HEADER_MESSAGE)
                         .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(mainMenu()))
                         .build(),

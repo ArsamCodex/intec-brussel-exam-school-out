@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * The Exam entity keeps track of the various exams or tests that are taken. Initially we will keep 'simple' exams in our program.
@@ -39,4 +40,10 @@ public class Exam {
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER)
     private Module module;
+
+    @OneToOne
+    private Exam examGroup;
+
+    @OneToMany
+    private List<Exam> subExams;
 }

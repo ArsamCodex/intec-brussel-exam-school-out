@@ -41,7 +41,7 @@ public class TablePrinter {
     public static void printExamTable(List<Exam> exams) {
         CmdTable table = new CmdTable();
         table.setShowVerticalLines(true);
-        table.setHeaders("ID", "NAME", "DESCRIPTION", "DATE", "WEIGHT", "TOTAL", "MODULE");
+        table.setHeaders("ID", "NAME", "DESCRIPTION", "DATE", "WEIGHT", "TOTAL", "GROUP", "MODULE");
         exams.stream().map(exam -> new String[]{
                 String.valueOf(exam.getId()),
                 exam.getName(),
@@ -49,7 +49,20 @@ public class TablePrinter {
                 exam.getDate().toString(),
                 exam.getWeight().toString(),
                 exam.getTotal().toString(),
+                exam.getExamGroup() != null ? exam.getExamGroup().getName() : "",
                 exam.getModule().getName()
+        }).collect(Collectors.toList()).forEach(table::addRow);
+        table.print();
+    }
+
+    public static void printSubExamsTable(final Exam exam) {
+        CmdTable table = new CmdTable();
+        table.setShowVerticalLines(true);
+        table.setHeaders("ID", "NAME", "DATE");
+        exam.getSubExams().stream().map(subExam -> new String[]{
+                String.valueOf(subExam.getId()),
+                subExam.getName(),
+                subExam.getDate().toString(),
         }).collect(Collectors.toList()).forEach(table::addRow);
         table.print();
     }
@@ -64,7 +77,7 @@ public class TablePrinter {
                 user.getPerson().getFirstName(),
                 user.getPerson().getFamilyName(),
                 user.getPerson().getGender().name(),
-                user.getPerson().getCourse().getName()
+                user.getPerson().getCourseActive() != null ? user.getPerson().getCourseActive().getName() : ""
         }).collect(Collectors.toList()).forEach(table::addRow);
         table.print();
     }

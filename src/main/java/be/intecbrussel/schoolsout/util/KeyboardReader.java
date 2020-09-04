@@ -14,26 +14,40 @@ public class KeyboardReader {
         out.println(message);
         String result = "";
         boolean exit = false;
+        String enteredValue = keyboard.nextLine();
         do {
-            final String enteredValue = keyboard.next();
             if (!enteredValue.isEmpty() && !trimmed(enteredValue).isEmpty() && trimmed(enteredValue).length() >= 2) {
-                result = trimmed(enteredValue);
+                result = enteredValue;
                 exit = true;
             } else {
                 err.println("The input entered is invalid..!");
+                enteredValue = keyboard.nextLine();
             }
         }
         while (!exit);
         return result;
     }
 
+    public static String nextStringForcedNoSpecialChars(final String message) {
+        return trimmed(nextStringForced(message));
+    }
+
+
     public static String nextString(final String message) {
         out.println(message);
-        return trimmed(keyboard.next());
+        return keyboard.nextLine();
+    }
+
+    public static String nextStringNoSpecialChars(final String message) {
+        return trimmed(nextString(message));
     }
 
     public static String nextString() {
-        return trimmed(keyboard.next());
+        return keyboard.nextLine();
+    }
+
+    public static String nextStringNoSpecialChars() {
+        return trimmed(keyboard.nextLine());
     }
 
     public static Integer nextInt() {

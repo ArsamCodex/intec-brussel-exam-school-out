@@ -30,7 +30,13 @@ public class Person {
     private Gender gender;
 
     @ManyToOne
-    private Course course;
+    private Course courseActive;
+
+    @ManyToMany
+    @JoinTable(name = "PERSON_COURSE",
+            joinColumns = @JoinColumn(name = "person_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private List<Course> courseHistory;
 
     @OneToOne
     private User user;

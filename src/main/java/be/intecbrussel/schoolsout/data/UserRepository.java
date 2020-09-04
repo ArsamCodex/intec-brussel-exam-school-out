@@ -85,7 +85,8 @@ public class UserRepository {
                 .familyName(!person.getFamilyName().isEmpty() ? person.getFamilyName() : foundPerson.getFamilyName())
                 .firstName(!person.getFirstName().isEmpty() ? person.getFirstName() : foundPerson.getFirstName())
                 .gender(person.getGender() != null ? person.getGender() : foundPerson.getGender())
-                .course(person.getCourse() != null ? person.getCourse() : foundPerson.getCourse())
+                .courseActive(person.getCourseActive() != null ? person.getCourseActive() : foundPerson.getCourseActive())
+                .courseHistory(!person.getCourseHistory().isEmpty() ? person.getCourseHistory() : foundPerson.getCourseHistory())
                 .grades(!person.getGrades().isEmpty() ? person.getGrades() : foundPerson.getGrades())
                 .build();
         em.merge(updatedUser);

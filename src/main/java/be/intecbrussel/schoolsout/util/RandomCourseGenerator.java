@@ -49,4 +49,6 @@ public class RandomCourseGenerator {
                 .date(LocalDate.now())
                 .build();
     }
+
+
 }

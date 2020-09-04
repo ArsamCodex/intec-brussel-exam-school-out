@@ -3,12 +3,13 @@ package be.intecbrussel.schoolsout.util;
 import be.intecbrussel.schoolsout.model.*;
 import com.github.javafaker.Faker;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
 public class RandomUserGenerator {
-    public static final Faker faker = new Faker(new Locale("en-US"));
+    private static final Faker faker = new Faker(new Locale("en-US"));
 
     private static User user(final Person person) {
         return User.builder()
@@ -26,30 +27,33 @@ public class RandomUserGenerator {
                 .gender(new Random().nextInt(100) % 2 == 0 ? Gender.FEMALE : Gender.MALE)
                 .build();
 
-        person.setCourse(course);
+        person.setCourseActive(course);
         person.setUser(user(person));
         person.setGrades(grades(person));
 
         return person;
     }
 
-    private static Person person() {
-        return Person.builder()
+    public static Person person() {
+        final Person person = Person.builder()
                 .familyName(RandomUserGenerator.faker.name().lastName())
                 .firstName(RandomUserGenerator.faker.name().firstName())
                 .gender(new Random().nextInt(100) % 2 == 0 ? Gender.FEMALE : Gender.MALE)
                 .build();
+
+        person.setUser(user(person));
+        return person;
     }
 
     private static List<Grade> grades(final Person person) {
         return List.of(
                 Grade.builder()
                         .person(person)
-                        .score(faker.number().randomDouble(2, 0, 100))
+                        .gradeValue(BigDecimal.valueOf(faker.number().randomDouble(2, 0, 100)))
                         .build(),
                 Grade.builder()
                         .person(person)
-                        .score(faker.number().randomDouble(2, 0, 100))
+                        .gradeValue(BigDecimal.valueOf(faker.number().randomDouble(2, 0, 100)))
                         .build()
         );
     }
