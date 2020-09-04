@@ -183,4 +183,43 @@ public class CourseRepository {
         em.getTransaction().commit();
         return getCourseById(id);
     }
+
+    public Optional<Module> removeModule(final Long id) {
+        final EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.remove(Module.builder().id(id).build());
+        em.getTransaction().commit();
+        return getModuleById(id);
+    }
+
+    public Optional<Module> removeModule(final Module module) {
+        final EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.remove(module);
+        em.getTransaction().commit();
+        return getModuleById(module.getId());
+    }
+
+    public Optional<Exam> removeExam(final Exam exam) {
+        final EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.remove(exam);
+        em.getTransaction().commit();
+        return getExamById(exam.getId());
+    }
+
+    public Optional<Exam> removeExam(final Long id) {
+        final EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.remove(Module.builder().id(id).build());
+        em.getTransaction().commit();
+        return getExamById(id);
+    }
 }
+
+
+
+
+
+
+

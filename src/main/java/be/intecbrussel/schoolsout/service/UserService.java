@@ -24,12 +24,6 @@ public class UserService {
         this.userRepo = new UserRepository();
     }
 
-    public void addPersonToDB(final Person personToAdd) {
-        final Optional<Person> oPerson = userRepo.addPerson(personToAdd, personToAdd.getUser());
-        oPerson.ifPresentOrElse(person -> out.println("The person is registered..!"),
-                () -> err.println("Error: person could NOT be saved.."));
-    }
-
     public void addUserToDB(final User userToAdd) {
         final Optional<User> oUser = userRepo.addUser(userToAdd);
         oUser.ifPresentOrElse(user -> out.println("The user is registered..!"),
@@ -119,4 +113,28 @@ public class UserService {
         oUpdatedUser.ifPresentOrElse(user -> TablePrinter.printUserTable(Collections.singletonList(user)),
                 () -> err.println("Error: The user could with login " + login + " could NOT be updated.."));
     }
+
+    public void removeOneUser() {
+        out.print("User Login: ");
+        final String login = KeyboardReader.nextStringForced("User Login: ");
+        final Optional<User> oCourse = userRepo.removeUser(login);
+        oCourse.ifPresentOrElse(course -> err.println("Error: The user could NOT be deleted.."),
+                () -> out.println("The user with login [" + login + "] is deleted.."));
+    }
+
+    public void removeOneCourse() {
+        out.print("Person ID: ");
+        final Long id = Long.parseLong(KeyboardReader.nextStringForced("Person ID: "));
+        final Optional<Person> oCourse = userRepo.removePerson(id);
+        oCourse.ifPresentOrElse(course -> err.println("Error: The person could NOT be deleted.."),
+                () -> out.println("The person with ID " + id + " is deleted.."));
+    }
+
+    public void addPersonToDB(final Person personToAdd) {
+        final Optional<Person> oPerson = userRepo.addPerson(personToAdd, personToAdd.getUser());
+        oPerson.ifPresentOrElse(person -> out.println("The person is registered..!"),
+                () -> err.println("Error: person could NOT be saved.."));
+    }
+
+
 }

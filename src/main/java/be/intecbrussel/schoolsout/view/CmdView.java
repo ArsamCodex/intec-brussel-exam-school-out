@@ -17,6 +17,8 @@ public class CmdView {
 
     private static final UserService userService = new UserService();
     private static final CourseService courseService = new CourseService();
+    private static final String EXIT_MESSAGE_CONTENT = "Exit from application..!";
+    private static final String GO_BACK_MESSAGE_CONTENT = "Go back to previous menu..";
 
     public static void main(String[] args) {
 
@@ -94,7 +96,7 @@ public class CmdView {
                 CmdMenuItem.builder()
                         .id(0)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
@@ -132,13 +134,13 @@ public class CmdView {
                 CmdMenuItem.builder()
                         .id(0)
                         .header("< Go Back")
-                        .content("Go back to main menu")
+                        .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(mainMenu()))
                         .build(),
                 CmdMenuItem.builder()
                         .id(-1)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
@@ -176,7 +178,7 @@ public class CmdView {
                 CmdMenuItem.builder()
                         .id(-1)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
@@ -201,7 +203,7 @@ public class CmdView {
                 CmdMenuItem.builder()
                         .id(-1)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
@@ -226,7 +228,7 @@ public class CmdView {
                 CmdMenuItem.builder()
                         .id(-1)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
@@ -251,7 +253,7 @@ public class CmdView {
                 CmdMenuItem.builder()
                         .id(-1)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
@@ -288,13 +290,13 @@ public class CmdView {
                 CmdMenuItem.builder()
                         .id(0)
                         .header("< Go Back")
-                        .content("Go back to main menu")
+                        .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(mainMenu()))
                         .build(),
                 CmdMenuItem.builder()
                         .id(-1)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
@@ -325,13 +327,13 @@ public class CmdView {
                 CmdMenuItem.builder()
                         .id(0)
                         .header("< Go Back")
-                        .content("Go back to module menu")
+                        .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(moduleMenu()))
                         .build(),
                 CmdMenuItem.builder()
                         .id(-1)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
@@ -350,13 +352,13 @@ public class CmdView {
                 CmdMenuItem.builder()
                         .id(0)
                         .header("< Go Back")
-                        .content("Go back to module menu")
+                        .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(moduleMenu()))
                         .build(),
                 CmdMenuItem.builder()
                         .id(-1)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
@@ -375,13 +377,13 @@ public class CmdView {
                 CmdMenuItem.builder()
                         .id(0)
                         .header("< Go Back")
-                        .content("Go back to module menu")
+                        .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(moduleMenu()))
                         .build(),
                 CmdMenuItem.builder()
                         .id(-1)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
@@ -400,13 +402,13 @@ public class CmdView {
                 CmdMenuItem.builder()
                         .id(0)
                         .header("< Go Back")
-                        .content("Go back to module menu")
+                        .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(moduleMenu()))
                         .build(),
                 CmdMenuItem.builder()
                         .id(-1)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
@@ -420,24 +422,36 @@ public class CmdView {
                         .id(1)
                         .header("Show")
                         .content("Show exams..")
-                        .query(courseService::getAllExams)
+                        .query(() -> show(examFindMenu()))
                         .build(),
                 CmdMenuItem.builder()
                         .id(2)
                         .header("Add")
                         .content("Add an exam..")
-                        .query(courseService::addOneExam)
+                        .query(() -> show(examAddMenu()))
+                        .build(),
+                CmdMenuItem.builder()
+                        .id(3)
+                        .header("Edit")
+                        .content("Edit an exam..")
+                        .query(() -> show(examEditMenu()))
+                        .build(),
+                CmdMenuItem.builder()
+                        .id(4)
+                        .header("Remove")
+                        .content("Remove an exam..")
+                        .query(() -> show(examRemoveMenu()))
                         .build(),
                 CmdMenuItem.builder()
                         .id(0)
                         .header("< Go Back")
-                        .content("Go back to main menu")
+                        .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(mainMenu()))
                         .build(),
                 CmdMenuItem.builder()
                         .id(-1)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
@@ -468,13 +482,13 @@ public class CmdView {
                 CmdMenuItem.builder()
                         .id(0)
                         .header("< Go Back")
-                        .content("Go back to exam menu")
+                        .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(examMenu()))
                         .build(),
                 CmdMenuItem.builder()
                         .id(-1)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
@@ -493,13 +507,13 @@ public class CmdView {
                 CmdMenuItem.builder()
                         .id(0)
                         .header("< Go Back")
-                        .content("Go back to exam menu")
+                        .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(examMenu()))
                         .build(),
                 CmdMenuItem.builder()
                         .id(-1)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
@@ -518,13 +532,13 @@ public class CmdView {
                 CmdMenuItem.builder()
                         .id(0)
                         .header("< Go Back")
-                        .content("Go back to exam menu")
+                        .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(examMenu()))
                         .build(),
                 CmdMenuItem.builder()
                         .id(-1)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
@@ -543,13 +557,13 @@ public class CmdView {
                 CmdMenuItem.builder()
                         .id(0)
                         .header("< Go Back")
-                        .content("Go back to exam menu")
+                        .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(examMenu()))
                         .build(),
                 CmdMenuItem.builder()
                         .id(-1)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
@@ -568,13 +582,13 @@ public class CmdView {
                 CmdMenuItem.builder()
                         .id(0)
                         .header("< Go Back")
-                        .content("Go back to main menu")
+                        .content(GO_BACK_MESSAGE_CONTENT)
                         .query(() -> show(mainMenu()))
                         .build(),
                 CmdMenuItem.builder()
                         .id(-1)
                         .header("Exit")
-                        .content("Exit from application..!")
+                        .content(EXIT_MESSAGE_CONTENT)
                         .query(() -> System.exit(0))
                         .build()
         ));
