@@ -1,6 +1,7 @@
 package be.intecbrussel.schoolsout.data;
 
-import be.intecbrussel.schoolsout.model.*;
+import be.intecbrussel.schoolsout.model.Page;
+import be.intecbrussel.schoolsout.model.Person;
 import be.intecbrussel.schoolsout.model.User;
 import be.intecbrussel.schoolsout.util.EntityGenerator;
 

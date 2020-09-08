@@ -1,7 +1,9 @@
 package be.intecbrussel.schoolsout.util;
 
-import be.intecbrussel.schoolsout.model.*;
+import be.intecbrussel.schoolsout.model.Course;
+import be.intecbrussel.schoolsout.model.Exam;
 import be.intecbrussel.schoolsout.model.Module;
+import be.intecbrussel.schoolsout.model.User;
 import be.intecbrussel.schoolsout.view.CmdTable;
 
 import java.util.List;

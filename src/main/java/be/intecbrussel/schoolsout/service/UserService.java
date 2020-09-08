@@ -6,7 +6,6 @@ import be.intecbrussel.schoolsout.model.Person;
 import be.intecbrussel.schoolsout.model.User;
 import be.intecbrussel.schoolsout.util.KeyboardReader;
 import be.intecbrussel.schoolsout.util.TablePrinter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,13 +14,16 @@ import java.util.Optional;
 import static java.lang.System.err;
 import static java.lang.System.out;
 
-@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepo;
 
     public UserService() {
         this.userRepo = new UserRepository();
+    }
+
+    public UserService(UserRepository userRepo) {
+        this.userRepo = userRepo;
     }
 
     public void addUserToDB(final User userToAdd) {

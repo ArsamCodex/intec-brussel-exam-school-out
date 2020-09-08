@@ -5,7 +5,6 @@ import be.intecbrussel.schoolsout.model.Exam;
 import be.intecbrussel.schoolsout.model.Module;
 import be.intecbrussel.schoolsout.util.KeyboardReader;
 import be.intecbrussel.schoolsout.util.TablePrinter;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -15,13 +14,16 @@ import java.util.Optional;
 import static java.lang.System.err;
 import static java.lang.System.out;
 
-@RequiredArgsConstructor
 public class ExamService {
 
     private final CourseRepository courseRepo;
 
     public ExamService() {
         this.courseRepo = new CourseRepository();
+    }
+
+    public ExamService(CourseRepository courseRepo) {
+        this.courseRepo = courseRepo;
     }
 
     public void addExamToDB(final Exam examToAdd) {
@@ -32,17 +34,17 @@ public class ExamService {
     }
 
     public void addOneExam() {
-        final String examName = KeyboardReader.nextStringForced("Exam Name: ");
-        final String examDescription = KeyboardReader.nextStringForced("Exam Description: ");
         final Long moduleId = Long.parseLong(KeyboardReader.nextString("Exam Module ID: "));
-        final Double weight = Double.parseDouble(KeyboardReader.nextString("Exam Weight"));
-        final Integer total = Integer.parseInt(KeyboardReader.nextString("Exam Total"));
-        final LocalDate date = KeyboardReader.nextDate("Exam Date: ");
-
         final Optional<Module> oModule = courseRepo.getModuleById(moduleId);
 
         oModule.ifPresentOrElse(module -> {
-            Exam e = Exam.builder()
+            final String examName = KeyboardReader.nextStringForced("Exam Name: ");
+            final String examDescription = KeyboardReader.nextStringForced("Exam Description: ");
+            final Double weight = Double.parseDouble(KeyboardReader.nextString("Exam Weight"));
+            final Integer total = Integer.parseInt(KeyboardReader.nextString("Exam Total"));
+            final LocalDate date = KeyboardReader.nextDate("Exam Date: ");
+
+            final Exam e = Exam.builder()
                     .name(examName)
                     .description(examDescription)
                     .weight(weight)
@@ -51,6 +53,31 @@ public class ExamService {
                     .module(module)
                     .build();
 
+            boolean hasSubExams;
+            hasSubExams = KeyboardReader.nextString("Add a sub-exam? (y/n)").equals("y");
+
+            while (hasSubExams) {
+
+                final String subExamName = KeyboardReader.nextStringForced("Sub Exam Name: ");
+                final String subExamDescription = KeyboardReader.nextStringForced("Sub Exam Description: ");
+                final Double subWeight = Double.parseDouble(KeyboardReader.nextString("Sub Exam Weight"));
+                final Integer subTotal = Integer.parseInt(KeyboardReader.nextString("Sub Exam Total"));
+                final LocalDate subDate = KeyboardReader.nextDate("Sub Exam Date: ");
+
+                e.addSubExam(Exam.builder()
+                        .name(subExamName)
+                        .description(subExamDescription)
+                        .weight(subWeight)
+                        .total(subTotal)
+                        .date(subDate)
+                        .module(module)
+                        .examGroup(e)
+                        .build());
+
+                hasSubExams = KeyboardReader.nextString("Add a sub-exam? (y/n)").equals("y");
+
+            }
+
             addExamToDB(e);
             out.println("The exam is added with ID " + e.getId());
         }, () -> err.println("Error: The module is NOT found. You cannot add an exam to a module that does NOT exist. "));
@@ -58,14 +85,14 @@ public class ExamService {
     }
 
     public void getAllExams() {
-        out.println("Module list is below: ");
+        out.println("Exam list is below: ");
         final List<Exam> examList = courseRepo.getExams();
         TablePrinter.printExamTable(examList);
     }
 
     public void getAllExamsByModuleId() {
         final Long moduleId = Long.parseLong(KeyboardReader.nextStringForced("Module ID: "));
-        out.println("Module list is below: ");
+        out.println("Exam list is below: ");
         final List<Exam> examList = courseRepo.getExams(moduleId);
         TablePrinter.printExamTable(examList);
     }

@@ -1,7 +1,5 @@
 package be.intecbrussel.schoolsout.view;
 
-import be.intecbrussel.schoolsout.model.Course;
-import be.intecbrussel.schoolsout.model.Person;
 import be.intecbrussel.schoolsout.service.CourseService;
 import be.intecbrussel.schoolsout.service.ExamService;
 import be.intecbrussel.schoolsout.service.ModuleService;
@@ -11,6 +9,7 @@ import be.intecbrussel.schoolsout.util.RandomCourseGenerator;
 import be.intecbrussel.schoolsout.util.RandomUserGenerator;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static java.lang.System.out;
@@ -38,18 +37,16 @@ public class CmdView {
 
     private static void generateRandomDataForAllTables() {
         // Generates 3 course with 10 modules for each, and also 4 exams for each module..
-        IntStream.range(0, 3)
-                .forEach(cCount -> {
-                    final Course course = RandomCourseGenerator.course();
-                    courseService.addCourseToDB(course);
-                });
+        IntStream.range(0, 6)
+                .mapToObj(cCount -> RandomCourseGenerator.course())
+                .collect(Collectors.toSet())
+                .forEach(courseService::addCourseToDB);
 
         // Generates 2 people with 1 user for each person..
-        IntStream.range(0, 2)
-                .forEach(value -> {
-                    final Person person = RandomUserGenerator.person();
-                    userService.addPersonToDB(person);
-                });
+        IntStream.range(0, 4)
+                .mapToObj(value -> RandomUserGenerator.person())
+                .collect(Collectors.toSet())
+                .forEach(userService::addPersonToDB);
     }
 
     private static void show(CmdMenu menu) {

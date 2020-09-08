@@ -1,17 +1,17 @@
 package be.intecbrussel.schoolsout.util;
 
-import lombok.RequiredArgsConstructor;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static java.lang.System.out;
 
-@RequiredArgsConstructor
 public class DateValidator {
 
     private final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+    public DateValidator() {
+    }
 
     public static boolean validate(final String strDate) {
         /* Check if date is 'null' */

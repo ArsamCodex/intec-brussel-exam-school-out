@@ -5,7 +5,6 @@ import be.intecbrussel.schoolsout.model.Course;
 import be.intecbrussel.schoolsout.model.Module;
 import be.intecbrussel.schoolsout.util.KeyboardReader;
 import be.intecbrussel.schoolsout.util.TablePrinter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,13 +13,16 @@ import java.util.Optional;
 import static java.lang.System.err;
 import static java.lang.System.out;
 
-@RequiredArgsConstructor
 public class ModuleService {
 
     private final CourseRepository courseRepo;
 
     public ModuleService() {
         this.courseRepo = new CourseRepository();
+    }
+
+    public ModuleService(CourseRepository courseRepo) {
+        this.courseRepo = courseRepo;
     }
 
     public void addModuleToDB(final Module moduleToAdd) {

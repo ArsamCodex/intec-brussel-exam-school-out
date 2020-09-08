@@ -4,16 +4,17 @@ import be.intecbrussel.schoolsout.model.Course;
 import be.intecbrussel.schoolsout.model.Exam;
 import be.intecbrussel.schoolsout.model.Module;
 import com.github.javafaker.Faker;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
-@NoArgsConstructor
 public class RandomCourseGenerator {
 
     public static final Faker faker = new Faker(new Locale("en-US"));
+
+    public RandomCourseGenerator() {
+    }
 
     public static Course course() {
         final Course course = Course.builder()
